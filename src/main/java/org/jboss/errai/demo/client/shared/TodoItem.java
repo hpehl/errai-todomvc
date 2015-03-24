@@ -44,8 +44,12 @@ import java.util.Date;
 @Entity
 @Bindable
 @Portable
-@NamedQueries({@NamedQuery(name = "allTodos", query = "SELECT t FROM Todo t ORDER BY t.id")})
-public class Todo {
+@NamedQueries({
+        @NamedQuery(name = "allTodos", query = "SELECT t FROM TodoItem t ORDER BY t.createdAt"),
+        @NamedQuery(name = "activeTodos", query = "SELECT t FROM TodoItem t WHERE t.done = false ORDER BY t.createdAt"),
+        @NamedQuery(name = "completedTodos", query = "SELECT t FROM TodoItem t WHERE t.done = true ORDER BY t.createdAt")
+})
+public class TodoItem {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -61,11 +65,11 @@ public class Todo {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Todo)) return false;
+        if (this == o) { return true; }
+        if (!(o instanceof TodoItem)) { return false; }
 
-        Todo todo = (Todo) o;
-        return !(id != null ? !id.equals(todo.id) : todo.id != null);
+        TodoItem todoItem = (TodoItem) o;
+        return !(id != null ? !id.equals(todoItem.id) : todoItem.id != null);
 
     }
 
@@ -76,7 +80,7 @@ public class Todo {
 
     @Override
     public String toString() {
-        return "Todo{" + text + ", done=" + done + '}';
+        return "TodoItem{" + text + ", done=" + done + '}';
     }
 
     public Date getCreatedAt() {

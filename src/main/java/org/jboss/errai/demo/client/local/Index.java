@@ -21,41 +21,78 @@
  */
 package org.jboss.errai.demo.client.local;
 
-import com.google.gwt.user.cellview.client.CellList;
+import com.google.common.base.Enums;
+import com.google.common.base.Strings;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.errai.demo.client.shared.Todo;
+import org.jboss.errai.demo.client.shared.TodoItem;
+import org.jboss.errai.ui.client.widget.ListWidget;
 import org.jboss.errai.ui.nav.client.local.DefaultPage;
 import org.jboss.errai.ui.nav.client.local.Page;
+import org.jboss.errai.ui.nav.client.local.PageShown;
+import org.jboss.errai.ui.nav.client.local.PageState;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
+import org.slf4j.Logger;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+
+import static org.jboss.errai.demo.client.local.Index.Filter.ALL;
 
 /**
  * This is the companion Java class of the main page as specified by
- * {@link Templated}. It refers to a data field called "template" in
- * Index.html as its root and gains access to all data fields in the
- * template to add dynamic behavior (e.g. event handlers, data bindings, page
- * transitions).
+ * {@link Templated}. It refers to the HTML inside the body of Index.html.
  * <p>
  * The {@link Page} annotation declares this form as a bookmarkable page that
  * can be transitioned to by other pages of this application. Further the
  * specified role (DefaultPage.class) make this page appear by default when the
  * application is started.
  */
-@Page(role = DefaultPage.class)
-@Templated("Index.html#template")
+@Templated
+@Page(role = DefaultPage.class, path = "/{filter}")
 public class Index extends Composite {
 
-    @Inject
-    @DataField
-    TextBox newTodo;
+    @SuppressWarnings("unused")
+    enum Filter {
+        ALL("allTodos"),
+        ACTIVE("activeTodos"),
+        COMPLETED("completedTodos");
 
-    @Inject
-    @DataField
-    CheckBox toggleAll;
+        final String query;
 
+        Filter(String query) {
+            this.query = query;
+        }
+    }
+
+
+    @PageState String filter;
+    @Inject DataSync sync;
+    @Inject EntityManager em;
+    @Inject Logger logger;
+
+    @Inject @DataField TextBox newTodo;
+    @Inject @DataField CheckBox toggleAll;
+    @Inject @DataField ListWidget<TodoItem, TodoItemWidget> todoList;
+    @Inject @DataField InlineLabel todoCount;
+    @Inject @DataField Button clearCompleted;
+
+    @PageShown
+    private void sync() {
+        sync.sync(response -> {
+            logger.debug("Received sync response:" + response);
+            loadTodos();
+        });
+    }
+
+    private void loadTodos() {
+        Filter f = Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(Filter.class, filter).or(ALL);
+        TypedQuery<TodoItem> query = em.createNamedQuery(f.query, TodoItem.class);
+        todoList.setItems(query.getResultList());
+    }
 }

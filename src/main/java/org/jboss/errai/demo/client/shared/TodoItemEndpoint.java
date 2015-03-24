@@ -21,7 +21,14 @@
  */
 package org.jboss.errai.demo.client.shared;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 /**
@@ -30,23 +37,17 @@ import javax.ws.rs.core.Response;
  * HTTP endpoints. On the client, the interface can be used to construct
  * type safe remote method calls without having to worry about implementing the
  * request or serialization logic.
- *
- * @author Harald Pehl
  */
-public interface TodoEndpoint {
-
-    @GET
-    @Produces("application/json")
-    Response list();
+public interface TodoItemEndpoint {
 
     @POST
     @Consumes("application/json")
-    Response create(UserComplaint entity);
+    Response create(TodoItem entity);
 
     @PUT
     @Path("/{id:[0-9][0-9]*}")
     @Consumes("application/json")
-    Response update(@PathParam("id") Long id, UserComplaint entity);
+    Response update(@PathParam("id") Long id, TodoItem entity);
 
     @DELETE
     @Path("/{id:[0-9][0-9]*}")

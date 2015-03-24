@@ -24,51 +24,57 @@
 <head>
     <meta charset="utf-8">
     <title>Errai TodoMVC Sample</title>
-
     <link href="../../../../../../../webapp/css/base.css" rel="stylesheet">
     <link href="../../../../../../../webapp/css/app.css" rel="stylesheet">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 
 <body>
-<div id="template">
-    <section id="todoApp">
-        <header id="header">
-            <h1>todos</h1>
-            <input id="newTodo" placeholder="What needs to be done?" autofocus/>
-        </header>
+<section id="todoApp">
+    <header id="header">
+        <h1>todos</h1>
+        <input id="newTodo" data-field="newTodo" placeholder="What needs to be done?" autofocus/>
+    </header>
 
-        <section id="main">
-            <input id="toggleAll" type="checkbox">
-            <label for="toggleAll">Mark all as complete</label>
+    <section id="main">
+        <input id="toggleAll" data-field="toggleAll" type="checkbox">
+        <label for="toggleAll">Mark all as complete</label>
 
-            <div id="todoList">
-            </div>
-        </section>
-
-        <footer id="footer">
-            <span id="todoCount"><strong>5 items left</strong></span>
-            <ul id="filters">
-                <li>
-                    <a href="#/">All</a>
-                </li>
-                <li>
-                    <a href="#/active">Active</a>
-                </li>
-                <li>
-                    <a href="#/completed">Completed</a>
-                </li>
-            </ul>
-            <button id="clear-completed">Clear completed (5)</button>
-        </footer>
+        <ul id="todoList" data-field="todoList">
+            <li data-field="item">
+                <div class="view">
+                    <input class="toggle" type="checkbox" data-field="done">
+                    <label data-field="text">Foo</label>
+                    <button class="destroy" data-field="delete"></button>
+                </div>
+                <input class="edit" data-field="edit">
+            </li>
+        </ul>
     </section>
 
-    <footer id="info">
-        <p>Double-click to edit a todo</p>
-        <p>Created by <a href="http://hpehl.info">Harald Pehl</a></p>
-        <p>Port of <a href="http://todomvc.com">TodoMVC</a></p>
+    <footer id="footer">
+        <span id="todoCount" data-field="todoCount">5 items left</span>
+        <ul id="filters">
+            <li>
+                <a href="#;filter=all">All</a>
+            </li>
+            <li>
+                <a href="#;filter=active">Active</a>
+            </li>
+            <li>
+                <a href="#;filter=completed">Completed</a>
+            </li>
+        </ul>
+        <button id="clearCompleted" data-field="clearCompleted">Clear completed (5)</button>
     </footer>
-</div>
+</section>
+
+<footer id="info">
+    <p>Double-click to edit a todo</p>
+
+    <p>Created by <a href="http://hpehl.info">Harald Pehl</a></p>
+
+    <p>Port of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
 </body>
 </html>

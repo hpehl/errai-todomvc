@@ -22,7 +22,7 @@
 package org.jboss.errai.demo.client.local;
 
 import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.demo.client.shared.Todo;
+import org.jboss.errai.demo.client.shared.TodoItem;
 import org.jboss.errai.jpa.sync.client.local.ClientSyncManager;
 import org.jboss.errai.jpa.sync.client.shared.SyncResponse;
 import org.slf4j.Logger;
@@ -63,8 +63,8 @@ public class DataSync {
      *
      * @param callback the callback to invoked upon completion of the data sync request.
      */
-    public void sync(RemoteCallback<List<SyncResponse<Todo>>> callback) {
+    public void sync(RemoteCallback<List<SyncResponse<TodoItem>>> callback) {
         logger.debug("Sending sync:");
-        syncManager.coldSync("allTodos", Todo.class, Collections.<String, Object>emptyMap(), callback, null);
+        syncManager.coldSync("allTodos", TodoItem.class, Collections.<String, Object>emptyMap(), callback, null);
     }
 }

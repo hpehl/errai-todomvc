@@ -16,9 +16,9 @@ import javax.annotation.PostConstruct;
 @EntryPoint
 public class App {
 
-  @PostConstruct
-  private void init() {
-    // This is specifying the relative path to the REST endpoint used to store todos on the server.
-    RestClient.setApplicationRoot("/errai-todomvc/rest");
-  }
+    @PostConstruct
+    private void init() {
+        // This is specifying the relative path to the REST endpoint used to store todos on the server.
+        RestClient.setApplicationRoot("/errai-todomvc/rest");
+    }
 }
