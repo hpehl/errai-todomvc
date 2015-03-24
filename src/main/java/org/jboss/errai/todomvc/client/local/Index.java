@@ -53,7 +53,7 @@ import static org.jboss.errai.todomvc.client.local.Index.Filter.ALL;
  * specified role (DefaultPage.class) make this page appear by default when the
  * application is started.
  */
-@Templated
+@Templated("#root")
 @Page(role = DefaultPage.class)
 public class Index extends Composite {
 
@@ -72,7 +72,7 @@ public class Index extends Composite {
 
 
     @PageState String filter;
-    @Inject DataSync sync;
+    @Inject DataSync dataSync;
     @Inject EntityManager em;
     @Inject Logger logger;
 
@@ -84,14 +84,14 @@ public class Index extends Composite {
 
     @PageShown
     private void sync() {
-        sync.sync(response -> {
+        dataSync.sync(response -> {
             logger.debug("Received sync response:" + response);
             loadTodos();
         });
     }
 
     private void loadTodos() {
-        Filter f = Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(Filter.class, filter).or(ALL);
+        Filter f = Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(Filter.class, filter.toUpperCase()).or(ALL);
         TypedQuery<TodoItem> query = em.createNamedQuery(f.query, TodoItem.class);
         todoList.setItems(query.getResultList());
     }

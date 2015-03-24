@@ -20,6 +20,7 @@
      
      Happy Coding!
  -->
+<!--suppress HtmlUnknownAnchorTarget -->
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -30,51 +31,53 @@
 </head>
 
 <body>
-<section id="todoApp">
-    <header id="header">
-        <h1>todos</h1>
-        <input id="newTodo" data-field="newTodo" placeholder="What needs to be done?" autofocus/>
-    </header>
+<div id="root">
+    <section id="todoapp">
+        <header id="header">
+            <h1>todos</h1>
+            <input id="new-todo" data-field="newTodo" placeholder="What needs to be done?" autofocus/>
+        </header>
 
-    <section id="main">
-        <input id="toggleAll" data-field="toggleAll" type="checkbox">
-        <label for="toggleAll">Mark all as complete</label>
+        <section id="main">
+            <input id="toggle-all" data-field="toggleAll" type="checkbox">
+            <label for="toggle-all">Mark all as complete</label>
 
-        <ul id="todoList" data-field="todoList">
-            <li data-field="item">
-                <div class="view">
-                    <input class="toggle" type="checkbox" data-field="done">
-                    <label data-field="text">Foo</label>
-                    <button class="destroy" data-field="delete"></button>
-                </div>
-                <input class="edit" data-field="edit">
-            </li>
-        </ul>
+            <ul id="todo-list" data-field="todoList">
+                <li data-field="item">
+                    <div class="view">
+                        <input class="toggle" type="checkbox" data-field="done">
+                        <label data-field="text">Foo</label>
+                        <button class="destroy" data-field="delete"></button>
+                    </div>
+                    <input class="edit" data-field="edit">
+                </li>
+            </ul>
+        </section>
+
+        <footer id="footer">
+            <span id="todo-count" data-field="todoCount">5 items left</span>
+            <ul id="filters">
+                <li>
+                    <a href="#;filter=all">All</a>
+                </li>
+                <li>
+                    <a href="#;filter=active">Active</a>
+                </li>
+                <li>
+                    <a href="#;filter=completed">Completed</a>
+                </li>
+            </ul>
+            <button id="clear-completed" data-field="clearCompleted">Clear completed (5)</button>
+        </footer>
     </section>
 
-    <footer id="footer">
-        <span id="todoCount" data-field="todoCount">5 items left</span>
-        <ul id="filters">
-            <li>
-                <a href="#;filter=all">All</a>
-            </li>
-            <li>
-                <a href="#;filter=active">Active</a>
-            </li>
-            <li>
-                <a href="#;filter=completed">Completed</a>
-            </li>
-        </ul>
-        <button id="clearCompleted" data-field="clearCompleted">Clear completed (5)</button>
+    <footer id="info">
+        <p>Double-click to edit a todo</p>
+
+        <p>Created by <a href="http://hpehl.info">Harald Pehl</a></p>
+
+        <p>Port of <a href="http://todomvc.com">TodoMVC</a></p>
     </footer>
-</section>
-
-<footer id="info">
-    <p>Double-click to edit a todo</p>
-
-    <p>Created by <a href="http://hpehl.info">Harald Pehl</a></p>
-
-    <p>Port of <a href="http://todomvc.com">TodoMVC</a></p>
-</footer>
+</div>
 </body>
 </html>

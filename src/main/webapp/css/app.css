@@ -21,33 +21,33 @@
    As a result, this application deviates from the TodoMVC standard of ul / li for the to do list. The
    styles applied to the li elements are duplicated here, matching a listItem class instead. */
 
-#todoList .listItem {
+#todo-list .listItem {
 	position: relative;
 	font-size: 24px;
 	border-bottom: 1px dotted #ccc;
 }
 
-#todoList div :last-child .listItem {
+#todo-list div :last-child .listItem {
 	border-bottom: none;
 }
 
-#todoList .listItem.editing {
+#todo-list .listItem.editing {
 	border-bottom: none;
 	padding: 0;
 }
 
-#todoList .listItem.editing .edit {
+#todo-list .listItem.editing .edit {
 	display: block;
 	width: 506px;
 	padding: 13px 17px 12px 17px;
 	margin: 0 0 0 43px;
 }
 
-#todoList .listItem.editing .view {
+#todo-list .listItem.editing .view {
 	display: none;
 }
 
-#todoList .listItem .toggle {
+#todo-list .listItem .toggle {
 	text-align: center;
 	width: 35px;
 	-webkit-appearance: none;
@@ -57,7 +57,7 @@
 	appearance: none;
 }
 
-#todoList .listItem .toggle:after {
+#todo-list .listItem .toggle:after {
 	font-size: 18px;
 	content: '✔';
 	line-height: 40px;
@@ -66,14 +66,14 @@
 	text-shadow: 0 -1px 0 #bfbfbf;
 }
 
-#todoList .listItem .toggle:checked:after {
+#todo-list .listItem .toggle:checked:after {
 	color: #85ada7;
 	text-shadow: 0 1px 0 #669991;
 	bottom: 1px;
 	position: relative;
 }
 
-#todoList .listItem label {
+#todo-list .listItem label {
 	word-break: break-word;
 	margin: 20px 15px;
 	display: inline-block;
@@ -84,12 +84,12 @@
 	transition: color 0.4s;
 }
 
-#todoList .listItem.completed label {
+#todo-list .listItem.completed label {
 	color: #a9a9a9;
 	text-decoration: line-through;
 }
 
-#todoList .listItem .destroy {
+#todo-list .listItem .destroy {
 	display: none;
 	position: absolute;
 	top: 10px;
@@ -105,7 +105,7 @@
 	transition: all 0.2s;
 }
 
-#todoList .listItem .destroy:hover {
+#todo-list .listItem .destroy:hover {
 	text-shadow: 0 0 1px #000,
 	0 0 10px rgba(199, 107, 107, 0.8);
 	-webkit-transform: scale(1.3);
@@ -115,18 +115,18 @@
 	transform: scale(1.3);
 }
 
-#todoList .listItem .destroy:after {
+#todo-list .listItem .destroy:after {
 	content: '✖';
 }
 
-#todoList .listItem:hover .destroy {
+#todo-list .listItem:hover .destroy {
 	display: block;
 }
 
-#todoList .listItem .edit {
+#todo-list .listItem .edit {
 	display: none;
 }
 
-#todoList div :last-child .listItem.editing {
+#todo-list div :last-child .listItem.editing {
 	margin-bottom: -1px;
 }

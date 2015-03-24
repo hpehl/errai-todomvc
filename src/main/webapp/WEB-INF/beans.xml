@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://xmlns.jcp.org/xml/ns/javaee">
 
+  <scan>
+    <!-- These exclusions were added by Errai to avoid deploying client-side classes to the server -->
+    <exclude name = "org.jboss.errai.todomvc.client.local.App" />
+    <exclude name = "org.jboss.errai.todomvc.client.local.DataSync" />
+    <exclude name = "org.jboss.errai.todomvc.client.local.Index$Filter" />
+    <exclude name = "org.jboss.errai.todomvc.client.local.Index" />
+    <exclude name = "org.jboss.errai.todomvc.client.local.TodoItemWidget" />
+    <!-- End of Errai exclusions -->
+
+
+
+
+
+
+
+
+
+  </scan>
 </beans>

@@ -53,7 +53,7 @@ public class DataSync {
      * and we get all new and updated objects from the server.
      */
     public void sync() {
-        sync(response -> logger.debug("Received sync response:" + response));
+        sync(response -> logger.debug("Received dataSync response:" + response));
     }
 
     /**
@@ -64,7 +64,7 @@ public class DataSync {
      * @param callback the callback to invoked upon completion of the data sync request.
      */
     public void sync(RemoteCallback<List<SyncResponse<TodoItem>>> callback) {
-        logger.debug("Sending sync:");
+        logger.debug("Sending dataSync:");
         syncManager.coldSync("allTodos", TodoItem.class, Collections.<String, Object>emptyMap(), callback, null);
     }
 }

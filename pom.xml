@@ -16,19 +16,19 @@
     <name>Errai TodoMVC Sample</name>
 
     <properties>
-        <!-- We want Lamdas, Functions, ... -->
+        <!-- We want Lambdas, Functions, ... -->
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.compiler.source>1.8</maven.compiler.source>
+        <errai.dev.context>${project.artifactId}</errai.dev.context>
+        <errai.jboss.home>${project.build.directory}/wildfly-${wildfly.version}</errai.jboss.home>
 
         <errai.version>3.2.0-SNAPSHOT</errai.version>
         <gwt.version>2.8.0.jboss1</gwt.version>
+        <javaee.version>1.0.2.Final</javaee.version>
         <maven.gwt.version>2.8.0-SNAPSHOT</maven.gwt.version>
         <slf4j.version>1.5.11</slf4j.version>
-        <javaee.version>1.0.2.Final</javaee.version>
-        <errai.dev.context>${project.artifactId}</errai.dev.context>
         <wildfly.version>9.0.0.Alpha1</wildfly.version>
         <!-- Add the absolute path for $JBOSS_HOME below to manage another instance -->
-        <errai.jboss.home>${project.build.directory}/wildfly-${wildfly.version}</errai.jboss.home>
     </properties>
 
     <dependencyManagement>
@@ -52,6 +52,12 @@
         <dependency>
             <groupId>org.jboss.errai</groupId>
             <artifactId>errai-cdi-jboss</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.jboss.errai</groupId>
+                    <artifactId>errai-client-local-class-hider</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- JEE -->
@@ -67,6 +73,12 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
+            <version>${gwt.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.gwt</groupId>
+            <artifactId>gwt-dev</artifactId>
             <version>${gwt.version}</version>
             <scope>provided</scope>
         </dependency>
@@ -172,6 +184,8 @@
                 <configuration>
                     <logLevel>INFO</logLevel>
                     <noServer>false</noServer>
+                    <strict>true</strict>
+                    <disableCastChecking>true</disableCastChecking>
                     <!--
                         Errai's embedded WildFly launcher can be used to simplify IDE run configs as
                         server-side code can then be debugged directly (without needing to set up a
@@ -182,15 +196,10 @@
                         To configure an alternative package filter for client-only classes, specify:
                         -Derrai.client.local.class.pattern=.*/myproject/client/.*
                     -->
-                    <extraJvmArgs>
-                        -Derrai.jboss.home=${errai.jboss.home}
-                        -Derrai.dev.context=${errai.dev.context}
-                    </extraJvmArgs>
                     <server>org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher</server>
-                    <disableCastChecking>true</disableCastChecking>
+                    <extraJvmArgs>-Derrai.jboss.home=${errai.jboss.home} -Derrai.dev.context=${errai.dev.context}</extraJvmArgs>
                     <runTarget>${errai.dev.context}/index.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
-                    <strict>true</strict>
                 </configuration>
             </plugin>
             <!-- Unpack jboss-as from maven. Remove this if you wish to use your own jboss/wildfly instance. -->
@@ -327,6 +336,12 @@
                     <groupId>org.jboss.errai</groupId>
                     <artifactId>errai-cdi-jboss</artifactId>
                     <scope>provided</scope>
+                    <exclusions>
+                        <exclusion>
+                            <groupId>org.jboss.errai</groupId>
+                            <artifactId>errai-client-local-class-hider</artifactId>
+                        </exclusion>
+                    </exclusions>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.errai</groupId>
