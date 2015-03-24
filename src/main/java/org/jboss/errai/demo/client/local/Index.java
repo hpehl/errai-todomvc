@@ -21,10 +21,18 @@
  */
 package org.jboss.errai.demo.client.local;
 
+import com.google.gwt.user.cellview.client.CellList;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.TextBox;
+import org.jboss.errai.demo.client.shared.Todo;
 import org.jboss.errai.ui.nav.client.local.DefaultPage;
 import org.jboss.errai.ui.nav.client.local.Page;
+import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
+
+import javax.annotation.PostConstruct;
+import javax.inject.Inject;
 
 /**
  * This is the companion Java class of the main page as specified by
@@ -41,5 +49,13 @@ import org.jboss.errai.ui.shared.api.annotations.Templated;
 @Page(role = DefaultPage.class)
 @Templated("Index.html#template")
 public class Index extends Composite {
+
+    @Inject
+    @DataField
+    TextBox newTodo;
+
+    @Inject
+    @DataField
+    CheckBox toggleAll;
 
 }
