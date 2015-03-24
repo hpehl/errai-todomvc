@@ -19,10 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.errai.demo.server;
+package org.jboss.errai.todomvc.server;
 
-import org.jboss.errai.demo.client.shared.TodoItem;
-import org.jboss.errai.demo.client.shared.UserComplaint;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.jpa.sync.client.shared.DataSyncService;
 import org.jboss.errai.jpa.sync.client.shared.JpaAttributeAccessor;
 import org.jboss.errai.jpa.sync.client.shared.SyncRequestOperation;
@@ -84,8 +83,8 @@ public class TodoItemRepository {
      * @throws IllegalArgumentException if {@code id} is null, or if there is no item with that ID in the database.
      */
     public void delete(Long id) {
-        UserComplaint uc = em.find(UserComplaint.class, id);
-        em.remove(uc);
+        TodoItem item = em.find(TodoItem.class, id);
+        em.remove(item);
     }
 
     /**

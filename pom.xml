@@ -182,7 +182,7 @@
                         To configure an alternative package filter for client-only classes, specify:
                         -Derrai.client.local.class.pattern=.*/myproject/client/.*
                     -->
-                    <extraJvmArgs>-Xmx1024m -XX:CompileThreshold=7000 -XX:MaxPermSize=512M
+                    <extraJvmArgs>
                         -Derrai.jboss.home=${errai.jboss.home}
                         -Derrai.dev.context=${errai.dev.context}
                     </extraJvmArgs>

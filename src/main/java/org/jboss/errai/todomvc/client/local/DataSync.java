@@ -19,10 +19,10 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.errai.demo.client.local;
+package org.jboss.errai.todomvc.client.local;
 
 import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.demo.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.jpa.sync.client.local.ClientSyncManager;
 import org.jboss.errai.jpa.sync.client.shared.SyncResponse;
 import org.slf4j.Logger;

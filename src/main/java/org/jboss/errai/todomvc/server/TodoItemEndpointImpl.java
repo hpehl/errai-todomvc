@@ -1,7 +1,7 @@
-package org.jboss.errai.demo.server;
+package org.jboss.errai.todomvc.server;
 
-import org.jboss.errai.demo.client.shared.TodoItem;
-import org.jboss.errai.demo.client.shared.TodoItemEndpoint;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItemEndpoint;
 
 import javax.ejb.Stateless;
 import javax.enterprise.event.Event;

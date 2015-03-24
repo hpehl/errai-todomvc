@@ -1,4 +1,4 @@
-package org.jboss.errai.demo.client.local;
+package org.jboss.errai.todomvc.client.local;
 
 import org.jboss.errai.enterprise.client.jaxrs.api.RestClient;
 import org.jboss.errai.ioc.client.api.EntryPoint;

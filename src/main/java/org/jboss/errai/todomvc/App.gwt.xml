@@ -5,10 +5,6 @@
 <module rename-to="app">
     <inherits name="org.jboss.errai.enterprise.All"/>
 
-    <replace-with class="org.jboss.errai.demo.client.local.Config">
-        <when-type-is class="org.jboss.errai.bus.client.framework.Configuration"/>
-    </replace-with>
-
     <set-property name="gwt.logging.enabled" value="TRUE"/>
     <!-- Uncomment the line below to enable all logging statements (default level is "INFO"). -->
     <!-- <set-property name="gwt.logging.logLevel" value="ALL"/> -->

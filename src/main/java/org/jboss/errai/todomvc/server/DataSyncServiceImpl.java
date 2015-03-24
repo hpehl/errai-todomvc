@@ -1,7 +1,7 @@
-package org.jboss.errai.demo.server;
+package org.jboss.errai.todomvc.server;
 
 import org.jboss.errai.bus.server.annotations.Service;
-import org.jboss.errai.demo.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.jpa.sync.client.shared.ConflictResponse;
 import org.jboss.errai.jpa.sync.client.shared.DataSyncService;
 import org.jboss.errai.jpa.sync.client.shared.SyncRequestOperation;

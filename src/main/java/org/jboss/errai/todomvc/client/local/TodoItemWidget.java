@@ -19,10 +19,9 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.errai.demo.client.local;
+package org.jboss.errai.todomvc.client.local;
 
 import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
@@ -32,9 +31,7 @@ import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.errai.databinding.client.api.DataBinder;
 import org.jboss.errai.databinding.client.api.InitialState;
-import org.jboss.errai.databinding.client.api.PropertyChangeEvent;
-import org.jboss.errai.databinding.client.api.PropertyChangeHandler;
-import org.jboss.errai.demo.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.ui.client.widget.HasModel;
 import org.jboss.errai.ui.shared.api.annotations.AutoBound;
 import org.jboss.errai.ui.shared.api.annotations.Bound;

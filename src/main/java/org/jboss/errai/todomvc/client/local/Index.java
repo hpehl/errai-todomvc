@@ -19,7 +19,7 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.errai.demo.client.local;
+package org.jboss.errai.todomvc.client.local;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
@@ -28,7 +28,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
-import org.jboss.errai.demo.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.ui.client.widget.ListWidget;
 import org.jboss.errai.ui.nav.client.local.DefaultPage;
 import org.jboss.errai.ui.nav.client.local.Page;
@@ -42,7 +42,7 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import static org.jboss.errai.demo.client.local.Index.Filter.ALL;
+import static org.jboss.errai.todomvc.client.local.Index.Filter.ALL;
 
 /**
  * This is the companion Java class of the main page as specified by
@@ -54,7 +54,7 @@ import static org.jboss.errai.demo.client.local.Index.Filter.ALL;
  * application is started.
  */
 @Templated
-@Page(role = DefaultPage.class, path = "/{filter}")
+@Page(role = DefaultPage.class)
 public class Index extends Composite {
 
     @SuppressWarnings("unused")
