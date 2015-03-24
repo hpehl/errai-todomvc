@@ -22,7 +22,6 @@
 package org.jboss.errai.todomvc.client.shared;
 
 import org.jboss.errai.common.client.api.annotations.Portable;
-import org.jboss.errai.databinding.client.api.Bindable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,7 +39,6 @@ import java.util.Date;
  * the client, it is persisted into the browser's offline storage.
  */
 @Entity
-@Bindable
 @Portable
 @NamedQueries({
         @NamedQuery(name = "allTodos", query = "SELECT t FROM TodoItem t ORDER BY t.createdAt"),

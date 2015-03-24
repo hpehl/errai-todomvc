@@ -25,6 +25,9 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.ui.client.widget.ListWidget;
 
+/**
+ * List wrapper around {@code TodoItemWidget}.
+ */
 public class TodoItemsWidget extends ListWidget<TodoItem, TodoItemWidget> {
 
     public TodoItemsWidget() {

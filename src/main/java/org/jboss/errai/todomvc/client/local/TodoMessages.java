@@ -27,10 +27,7 @@ import com.google.gwt.i18n.client.Messages;
 @DefaultLocale("en") // not required since this is the default
 public interface TodoMessages extends Messages {
     @DefaultMessage("{0,number} items left")
-    @AlternateMessage({
-            "one", "1 item left",
-            "=0", "Nothing to do"
-    })
+    @AlternateMessage({"one", "1 item left"})
     String todoItems(@PluralCount int itemCount);
 
     @DefaultMessage("Clear completed ({0,number})")

@@ -26,15 +26,15 @@ import com.google.common.base.Strings;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.errai.common.client.api.Caller;
-import org.jboss.errai.common.client.api.RemoteCallback;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
 import org.jboss.errai.todomvc.client.shared.QueryNames;
 import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.todomvc.client.shared.TodoItemEndpoint;
@@ -52,6 +52,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
+import static com.google.gwt.dom.client.Style.Display.NONE;
+import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.http.client.Response.SC_CREATED;
 import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
 
@@ -65,7 +67,7 @@ import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
  * application is started.
  */
 @Templated("#root")
-@Page(role = DefaultPage.class)
+@Page(role = DefaultPage.class, path = "index.html")
 public class MainPage extends Composite {
 
     @Inject Logger logger;
@@ -90,6 +92,11 @@ public class MainPage extends Composite {
     @Inject @DataField InlineLabel todoCount;
     @Inject @DataField Button clearCompleted;
 
+    // for the click handlers
+    @Inject @DataField InlineHyperlink allTodos;
+    @Inject @DataField InlineHyperlink activeTodos;
+    @Inject @DataField InlineHyperlink completedTodos;
+
     @PageShown
     void sync() {
         dataSync.sync(response -> {
@@ -100,17 +107,43 @@ public class MainPage extends Composite {
 
     void refresh() {
         List<TodoItem> items = loadTodos();
+        if (items.isEmpty()) {
+            // hide main section and footer
+            toggleAll.getParentElement().getStyle().setDisplay(NONE);
+            todoCount.getElement().getParentElement().getStyle().setDisplay(NONE);
+        } else {
+            toggleAll.getParentElement().getStyle().clearDisplay();
+            todoCount.getElement().getParentElement().getStyle().clearDisplay();
+        }
+        switch (queryName()) {
+            case ALL:
+                allTodos.addStyleName("selected");
+                activeTodos.removeStyleName("selected");
+                completedTodos.removeStyleName("selected");
+                break;
+            case ACTIVE:
+                allTodos.removeStyleName("selected");
+                activeTodos.addStyleName("selected");
+                completedTodos.removeStyleName("selected");
+                break;
+            case COMPLETED:
+                allTodos.removeStyleName("selected");
+                activeTodos.removeStyleName("selected");
+                completedTodos.addStyleName("selected");
+                break;
+        }
         todoItems.setItems(items);
         todoCount.setText(messages.todoItems(items.size()));
-        clearCompleted.setVisible(items.size() > 0);
         clearCompleted.setText(messages.clearCompleted(items.size()));
     }
 
     List<TodoItem> loadTodos() {
-        QueryNames f = Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(QueryNames.class, filter.toUpperCase())
-                .or(ALL);
-        TypedQuery<TodoItem> query = em.createNamedQuery(f.query(), TodoItem.class);
+        TypedQuery<TodoItem> query = em.createNamedQuery(queryName().query(), TodoItem.class);
         return query.getResultList();
+    }
+
+    QueryNames queryName() {
+        return Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(QueryNames.class, filter.toUpperCase()).or(ALL);
     }
 
     @EventHandler("toggleAll")
@@ -126,10 +159,10 @@ public class MainPage extends Composite {
 
     @EventHandler("newTodo")
     void onNewItem(KeyDownEvent event) {
-        if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER && !newTodo.getText().trim().equals("")) {
+        if (event.getNativeKeyCode() == KEY_ENTER && !newTodo.getText().trim().equals("")) {
             TodoItem item = new TodoItem();
             item.setText(newTodo.getText());
-            endpoint.call(new RemoteCallback<Response>() {
+            endpoint.call(new ResponseCallback() {
                 @Override
                 public void callback(final Response response) {
                     if (response.getStatusCode() == SC_CREATED) {

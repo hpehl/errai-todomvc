@@ -41,23 +41,23 @@
             <input data-field="toggleAll" id="toggle-all" class="toggle-all" type="checkbox">
             <label for="toggle-all">Mark all as complete</label>
             <ul data-field="todoItems" class="todo-list">
-                <!-- These are here just to show the structure of the list items -->
                 <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
-                <li data-field="todoItem" class="completed">
+                <li data-field="todoItem">
                     <div class="view">
-                        <input data-field="done" class="toggle" type="checkbox" checked>
-                        <label data-field="text">Lorem ipsum</label>
+                        <input data-field="done" class="toggle" type="checkbox">
+                        <label data-field="text">lorem ipsum</label>
                         <button data-field="delete" class="destroy"></button>
                     </div>
-                    <input data-field="edit" class="edit" value="Create a TodoMVC template">
+                    <input data-field="edit" class="edit">
                 </li>
-                <li>
+                <!-- This item is just for design reference. It's not used in the template. -->
+                <li class="completed">
                     <div class="view">
-                        <input class="toggle" type="checkbox">
-                        <label>Buy a unicorn</label>
+                        <input class="toggle" type="checkbox" checked>
+                        <label>dolor sit amet</label>
                         <button class="destroy"></button>
                     </div>
-                    <input class="edit" value="Rule the web">
+                    <input class="edit" value="dolor sit amet">
                 </li>
             </ul>
         </section>
@@ -68,13 +68,14 @@
             <!-- Remove this if you don't implement routing -->
             <ul class="filters">
                 <li>
-                    <a class="selected" href="#;filter=all">All</a>
+                    <a data-field="allTodos" href="#;filter=all">All</a>
+
                 </li>
                 <li>
-                    <a href="#;filter=active">Active</a>
+                    <a data-field="activeTodos" href="#;filter=active">Active</a>
                 </li>
                 <li>
-                    <a href="#;filter=completed">Completed</a>
+                    <a data-field="completedTodos" href="#;filter=completed">Completed</a>
                 </li>
             </ul>
             <!-- Hidden if no completed items are left -->

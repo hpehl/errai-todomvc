@@ -339,6 +339,7 @@
                     <groupId>org.jboss.errai</groupId>
                     <artifactId>errai-cdi-jboss</artifactId>
                     <scope>provided</scope>
+                    <!-- Necessary to use Java8 -->
                     <exclusions>
                         <exclusion>
                             <groupId>org.jboss.errai</groupId>

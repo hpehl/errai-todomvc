@@ -6,6 +6,5 @@
     <inherits name="org.jboss.errai.enterprise.All"/>
 
     <set-property name="gwt.logging.enabled" value="TRUE"/>
-    <!-- Uncomment the line below to enable all logging statements (default level is "INFO"). -->
-    <!-- <set-property name="gwt.logging.logLevel" value="ALL"/> -->
+    <set-property name="gwt.logging.logLevel" value="ALL"/>
 </module>
