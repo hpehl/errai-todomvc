@@ -38,8 +38,6 @@ import java.util.Date;
  * server and the client. On the server, it is persisted into the relational
  * database that is configured as data source in META-INF/persistence.xml. On
  * the client, it is persisted into the browser's offline storage.
- *
- * @author Harald Pehl
  */
 @Entity
 @Bindable

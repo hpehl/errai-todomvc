@@ -197,7 +197,9 @@
                         -Derrai.client.local.class.pattern=.*/myproject/client/.*
                     -->
                     <server>org.jboss.errai.cdi.server.gwt.EmbeddedWildFlyLauncher</server>
-                    <extraJvmArgs>-Derrai.jboss.home=${errai.jboss.home} -Derrai.dev.context=${errai.dev.context}</extraJvmArgs>
+                    <extraJvmArgs>
+                        -Derrai.jboss.home=${errai.jboss.home} -Derrai.dev.context=${errai.dev.context}
+                    </extraJvmArgs>
                     <runTarget>${errai.dev.context}/index.html</runTarget>
                     <hostedWebapp>src/main/webapp</hostedWebapp>
                 </configuration>
@@ -243,7 +245,8 @@
                         <artifactId>maven-war-plugin</artifactId>
                         <configuration>
                             <packagingExcludes>**/javax/**/*.*,**/client/local/**/*.class</packagingExcludes>
-                            <outputFileNameMapping>@{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@
+                            <outputFileNameMapping>
+                                @{artifactId}@-@{baseVersion}@@{dashClassifier?}@.@{extension}@
                             </outputFileNameMapping>
                         </configuration>
                     </plugin>

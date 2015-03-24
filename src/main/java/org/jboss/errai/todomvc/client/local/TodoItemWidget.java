@@ -21,6 +21,8 @@
  */
 package org.jboss.errai.todomvc.client.local;
 
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
@@ -39,29 +41,17 @@ import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.event.Event;
 import javax.inject.Inject;
 
-/**
- * @author Harald Pehl
- */
-@Templated("Index.html#item")
+@Templated("MainPage.html#todoItem")
 public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
 
-    @Inject Event<TodoItem> itemChangedEvent;
     @Inject @AutoBound DataBinder<TodoItem> itemBinder;
 
-    @Inject @DataField FlowPanel view;
-    @Inject @Bound @DataField InlineLabel text;
-    @Inject @Bound @DataField CheckBox done;
+    @Bound @DataField Element done = Document.get().createCheckInputElement();
+    @Bound @DataField Element text = Document.get().createLabelElement();
     @Inject @DataField Button delete;
     @Inject @DataField TextBox edit;
-
-    @PostConstruct
-    void setup() {
-        itemBinder.addPropertyChangeHandler(event -> itemChangedEvent.fire(itemBinder.getModel()));
-    }
 
     @Override
     public TodoItem getModel() {

@@ -8,12 +8,13 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.net.URI;
 
 /**
  * A stateless EJB implementing the REST endpoint to create, update and delete {@link TodoItem}s.
  */
-@Stateless
 @SuppressWarnings("unused")
+@Stateless
 public class TodoItemEndpointImpl implements TodoItemEndpoint {
 
     @Inject
@@ -26,8 +27,8 @@ public class TodoItemEndpointImpl implements TodoItemEndpoint {
     public Response create(TodoItem entity) {
         repository.create(entity);
         created.fire(entity);
-        return Response.created(
-                UriBuilder.fromResource(TodoItemEndpoint.class).path(String.valueOf(entity.getId())).build()).build();
+        URI uri = UriBuilder.fromResource(TodoItemEndpoint.class).path(String.valueOf(entity.getId())).build();
+        return Response.created(uri).build();
     }
 
     @Override

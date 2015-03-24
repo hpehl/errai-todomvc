@@ -19,36 +19,20 @@
  * Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
  * 02110-1301 USA, or see the FSF site: http://www.fsf.org.
  */
-package org.jboss.errai.todomvc.client.shared;
+package org.jboss.errai.todomvc.client.local;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
+import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
+import com.google.gwt.i18n.client.Messages;
 
-/**
- * This JAX-RS resource interface is used on both the client and the server. On
- * the server, it is implemented to expose the described resource methods as
- * HTTP endpoints. On the client, the interface can be used to construct
- * type safe remote method calls without having to worry about implementing the
- * request or serialization logic.
- */
-@Path("/todos")
-public interface TodoItemEndpoint {
+@DefaultLocale("en") // not required since this is the default
+public interface TodoMessages extends Messages {
+    @DefaultMessage("{0,number} items left")
+    @AlternateMessage({
+            "one", "1 item left",
+            "=0", "Nothing to do"
+    })
+    String todoItems(@PluralCount int itemCount);
 
-    @POST
-    @Consumes("application/json")
-    Response create(TodoItem entity);
-
-    @PUT
-    @Path("/{id:[0-9][0-9]*}")
-    @Consumes("application/json")
-    Response update(@PathParam("id") Long id, TodoItem entity);
-
-    @DELETE
-    @Path("/{id:[0-9][0-9]*}")
-    Response delete(@PathParam("id") Long id);
+    @DefaultMessage("Clear completed ({0,number})")
+    String clearCompleted(int itemCount);
 }

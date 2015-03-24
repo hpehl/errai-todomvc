@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<!--
+     This HTML file is an Errai UI "designer" Template. We say "designer"
+     because your graphic designers (or you, with your designer hat on) can
+     work with any old HTML+CSS tools you like, and get a realistic preview
+     of the UI straight off the filesystem. No processing is required.
+     
+     The data-field attributes in this template tie its elements to fields
+     in the related classes. Those related fields are annotated with @DataField.
+     
+     Try opening this file in your web browser, and you'll see what we mean!
+     Make some changes and hit refresh. Instant feedback. Excellent!
+          
+     For the ultimate instant feedback experience, find an "instant reload"
+     plugin for your browser, and you should see the preview update whenever
+     you save this file or the related CSS file. If you're using Chrome, we
+     recommend LivePage:
+     
+     https://chrome.google.com/webstore/detail/livepage/pilnojpmdoofaelbinaeodfpjheijkbh
+     
+     Happy Coding!
+ -->
+<!--suppress HtmlUnknownAnchorTarget -->
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Errai TodoMVC Sample</title>
+    <link href="../../../../../../../webapp/css/index.css" rel="stylesheet">
+</head>
+
+<body>
+<div id="root">
+    <section class="todoapp">
+        <header class="header">
+            <h1>todos</h1>
+            <input data-field="newTodo" class="new-todo" placeholder="What needs to be done?" autofocus>
+        </header>
+        <!-- This section should be hidden by default and shown when there are todos -->
+        <section class="main">
+            <input data-field="toggleAll" id="toggle-all" class="toggle-all" type="checkbox">
+            <label for="toggle-all">Mark all as complete</label>
+            <ul data-field="todoItems" class="todo-list">
+                <!-- These are here just to show the structure of the list items -->
+                <!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
+                <li data-field="todoItem" class="completed">
+                    <div class="view">
+                        <input data-field="done" class="toggle" type="checkbox" checked>
+                        <label data-field="text">Lorem ipsum</label>
+                        <button data-field="delete" class="destroy"></button>
+                    </div>
+                    <input data-field="edit" class="edit" value="Create a TodoMVC template">
+                </li>
+                <li>
+                    <div class="view">
+                        <input class="toggle" type="checkbox">
+                        <label>Buy a unicorn</label>
+                        <button class="destroy"></button>
+                    </div>
+                    <input class="edit" value="Rule the web">
+                </li>
+            </ul>
+        </section>
+        <!-- This footer should hidden by default and shown when there are todos -->
+        <footer class="footer">
+            <!-- This should be `0 items left` by default -->
+            <span data-field="todoCount" class="todo-count"></span>
+            <!-- Remove this if you don't implement routing -->
+            <ul class="filters">
+                <li>
+                    <a class="selected" href="#;filter=all">All</a>
+                </li>
+                <li>
+                    <a href="#;filter=active">Active</a>
+                </li>
+                <li>
+                    <a href="#;filter=completed">Completed</a>
+                </li>
+            </ul>
+            <!-- Hidden if no completed items are left -->
+            <button data-field="clearCompleted" class="clear-completed"></button>
+        </footer>
+    </section>
+    <footer class="info">
+        <p>Double-click to edit a todo</p>
+        <p>Created by <a href="http://hpehl.info">Harald Pehl</a></p>
+        <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+    </footer>
+</div>
+</body>
+</html>
