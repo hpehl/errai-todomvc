@@ -24,7 +24,7 @@ package org.jboss.errai.todomvc.client.local;
 import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
 import com.google.gwt.i18n.client.Messages;
 
-@DefaultLocale("en") // not required since this is the default
+@DefaultLocale("en")
 public interface TodoMessages extends Messages {
     @DefaultMessage("{0,number} items left")
     @AlternateMessage({"one", "1 item left"})

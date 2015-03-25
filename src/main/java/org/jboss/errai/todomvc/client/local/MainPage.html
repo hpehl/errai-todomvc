@@ -27,6 +27,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Errai TodoMVC Sample</title>
     <link href="../../../../../../../webapp/css/index.css" rel="stylesheet">
+    <link href="../../../../../../../webapp/css/app.css" rel="stylesheet">
 </head>
 
 <body>
@@ -68,14 +69,14 @@
             <!-- Remove this if you don't implement routing -->
             <ul class="filters">
                 <li>
-                    <a data-field="allTodos" href="#;filter=all">All</a>
+                    <a data-field="allTodos">All</a>
 
                 </li>
                 <li>
-                    <a data-field="activeTodos" href="#;filter=active">Active</a>
+                    <a data-field="activeTodos">Active</a>
                 </li>
                 <li>
-                    <a data-field="completedTodos" href="#;filter=completed">Completed</a>
+                    <a data-field="completedTodos">Completed</a>
                 </li>
             </ul>
             <!-- Hidden if no completed items are left -->

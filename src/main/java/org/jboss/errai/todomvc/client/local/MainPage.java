@@ -23,29 +23,30 @@ package org.jboss.errai.todomvc.client.local;
 
 import com.google.common.base.Enums;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMultimap;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.http.client.Response;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.InlineHyperlink;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.TextBox;
 import org.jboss.errai.common.client.api.Caller;
 import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
-import org.jboss.errai.todomvc.client.shared.QueryNames;
+import org.jboss.errai.todomvc.client.shared.QueryName;
 import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.todomvc.client.shared.TodoItemEndpoint;
 import org.jboss.errai.ui.nav.client.local.DefaultPage;
+import org.jboss.errai.ui.nav.client.local.Navigation;
 import org.jboss.errai.ui.nav.client.local.Page;
 import org.jboss.errai.ui.nav.client.local.PageShown;
 import org.jboss.errai.ui.nav.client.local.PageState;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
-import org.slf4j.Logger;
 
 import javax.enterprise.event.Observes;
 import javax.inject.Inject;
@@ -56,9 +57,7 @@ import java.util.List;
 import static com.google.gwt.dom.client.Style.Display.NONE;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.http.client.Response.SC_CREATED;
-import static org.jboss.errai.todomvc.client.shared.QueryNames.ACTIVE;
-import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
-import static org.jboss.errai.todomvc.client.shared.QueryNames.COMPLETED;
+import static org.jboss.errai.todomvc.client.shared.QueryName.*;
 
 /**
  * This is the companion Java class of the main page as specified by
@@ -73,7 +72,7 @@ import static org.jboss.errai.todomvc.client.shared.QueryNames.COMPLETED;
 @Page(role = DefaultPage.class, path = "index.html")
 public class MainPage extends Composite {
 
-    @Inject Logger logger;
+    @PageState String filter;
 
     /**
      * Errai's JAX-RS module generates a stub class that makes AJAX calls back to
@@ -84,10 +83,10 @@ public class MainPage extends Composite {
      */
     @Inject Caller<TodoItemEndpoint> endpoint;
 
-    @PageState String filter;
     @Inject DataSync dataSync;
     @Inject EntityManager em;
     @Inject TodoMessages messages;
+    @Inject Navigation navigation;
 
     @Inject @DataField TextBox newTodo;
     @DataField Element toggleAll = Document.get().createCheckInputElement();
@@ -95,37 +94,26 @@ public class MainPage extends Composite {
     @Inject @DataField InlineLabel todoCount;
     @Inject @DataField Button clearCompleted;
 
-    // for the click handlers
-    @Inject @DataField InlineHyperlink allTodos;
-    @Inject @DataField InlineHyperlink activeTodos;
-    @Inject @DataField InlineHyperlink completedTodos;
+    @Inject @DataField Anchor allTodos;
+    @Inject @DataField Anchor activeTodos;
+    @Inject @DataField Anchor completedTodos;
+
+
+    // ------------------------------------------------------ sync and refresh
 
     @PageShown
     void sync() {
-        dataSync.sync(response -> {
-            logger.debug("Received sync response:" + response);
-            refresh();
-        });
+        dataSync.sync(response -> refresh());
     }
 
     @SuppressWarnings("UnusedParameters")
     void changedItem(@Observes TodoItem changed) {
-        // simply reload all items
-        sync();
+        sync(); // simply reload all items
     }
 
     void refresh() {
-        QueryNames queryNames = queryName();
-        List<TodoItem> items = loadTodos(queryNames);
-        if (items.isEmpty()) {
-            // hide main section and footer
-            toggleAll.getParentElement().getStyle().setDisplay(NONE);
-            todoCount.getElement().getParentElement().getStyle().setDisplay(NONE);
-        } else {
-            toggleAll.getParentElement().getStyle().clearDisplay();
-            todoCount.getElement().getParentElement().getStyle().clearDisplay();
-        }
-        switch (queryNames) {
+        QueryName queryName = queryName();
+        switch (queryName) {
             case ALL:
                 allTodos.addStyleName("selected");
                 activeTodos.removeStyleName("selected");
@@ -142,18 +130,33 @@ public class MainPage extends Composite {
                 completedTodos.addStyleName("selected");
                 break;
         }
-        todoItems.setItems(items);
+
+        if (loadTodos(ALL).isEmpty()) {
+            // hide main section and footer
+            toggleAll.getParentElement().getStyle().setDisplay(NONE);
+            todoCount.getElement().getParentElement().getStyle().setDisplay(NONE);
+        } else {
+            toggleAll.getParentElement().getStyle().clearDisplay();
+            todoCount.getElement().getParentElement().getStyle().clearDisplay();
+        }
+        todoItems.setItems(loadTodos(queryName));
         todoCount.setText(messages.todoItems(loadTodos(ACTIVE).size()));
     }
 
-    List<TodoItem> loadTodos(QueryNames queryNames) {
-        TypedQuery<TodoItem> query = em.createNamedQuery(queryNames.query(), TodoItem.class);
+
+    // ------------------------------------------------------ entity manager and query
+
+    List<TodoItem> loadTodos(QueryName queryName) {
+        TypedQuery<TodoItem> query = em.createNamedQuery(queryName.query(), TodoItem.class);
         return query.getResultList();
     }
 
-    QueryNames queryName() {
-        return Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(QueryNames.class, filter.toUpperCase()).or(ALL);
+    QueryName queryName() {
+        return Strings.isNullOrEmpty(filter) ? ALL : Enums.getIfPresent(QueryName.class, filter.toUpperCase()).or(ALL);
     }
+
+
+    // ------------------------------------------------------ event handler
 
     @EventHandler("toggleAll")
     void onToggleAll(ClickEvent event) {
@@ -182,6 +185,21 @@ public class MainPage extends Composite {
             }).create(item);
             newTodo.setText("");
         }
+    }
+
+    @EventHandler("allTodos")
+    void allTodos(ClickEvent event) {
+        navigation.goTo(MainPage.class, ImmutableMultimap.of("filter", ALL.name().toLowerCase()));
+    }
+
+    @EventHandler("activeTodos")
+    void activeTodos(ClickEvent event) {
+        navigation.goTo(MainPage.class, ImmutableMultimap.of("filter", ACTIVE.name().toLowerCase()));
+    }
+
+    @EventHandler("completedTodos")
+    void completedTodos(ClickEvent event) {
+        navigation.goTo(MainPage.class, ImmutableMultimap.of("filter", COMPLETED.name().toLowerCase()));
     }
 
     @EventHandler("clearCompleted")

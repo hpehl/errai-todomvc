@@ -22,14 +22,15 @@
 package org.jboss.errai.todomvc.client.shared;
 
 @SuppressWarnings("unused")
-public enum QueryNames {
+public enum QueryName {
+
     ALL("allTodos"),
     ACTIVE("activeTodos"),
     COMPLETED("completedTodos");
 
     private final String query;
 
-    QueryNames(String query) {
+    QueryName(String query) {
         this.query = query;
     }
 

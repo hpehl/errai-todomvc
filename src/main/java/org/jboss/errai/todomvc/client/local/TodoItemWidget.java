@@ -23,6 +23,7 @@ package org.jboss.errai.todomvc.client.local;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.Style;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
@@ -43,6 +44,9 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
+import static com.google.gwt.dom.client.Style.Display.BLOCK;
+import static com.google.gwt.dom.client.Style.Display.INITIAL;
+import static com.google.gwt.dom.client.Style.Display.NONE;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ESCAPE;
 
@@ -73,6 +77,11 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
         this.model = model;
         Elements.setChecked(done, model.isDone());
         text.setInnerText(model.getText());
+        if (model.isDone()) {
+            addStyleName("completed");
+        } else {
+            removeStyleName("completed");
+        }
     }
 
 
@@ -88,6 +97,7 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
     void onStartEdit(DoubleClickEvent event) {
         editMode(true);
         edit.setText(model.getText());
+        edit.setFocus(true);
     }
 
     @EventHandler("edit")
@@ -97,6 +107,7 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
         }
         else if (event.getNativeKeyCode() == KEY_ENTER && !edit.getText().trim().equals("")) {
             editMode(false);
+            text.setInnerText(edit.getText());
             model.setText(edit.getText());
             saveAndFire();
         }
@@ -116,11 +127,14 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
 
     void editMode(boolean enable) {
         if (enable) {
-            done.getParentElement().setAttribute("hidden", "true");
+            done.getParentElement().getStyle().setDisplay(NONE);
+            edit.getElement().getStyle().setDisplay(INITIAL);
+            addStyleName("editing");
         } else {
-            done.getParentElement().setAttribute("hidden", "false");
+            done.getParentElement().getStyle().setDisplay(BLOCK);
+            edit.getElement().getStyle().setDisplay(NONE);
+            removeStyleName("editing");
         }
-        edit.setVisible(enable);
     }
 
 

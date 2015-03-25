@@ -30,7 +30,7 @@ import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
 
-import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
+import static org.jboss.errai.todomvc.client.shared.QueryName.ALL;
 
 /**
  * Helper class for full two-way data synchronization between the client and the

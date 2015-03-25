@@ -24,7 +24,7 @@ package org.jboss.errai.todomvc.client.local;
 import com.google.gwt.core.client.JavaScriptObject;
 
 /**
- * @author Harald Pehl
+ * Some native helper methods
  */
 final class Elements {
 

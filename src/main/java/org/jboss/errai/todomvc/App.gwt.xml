@@ -4,7 +4,4 @@
 
 <module rename-to="app">
     <inherits name="org.jboss.errai.enterprise.All"/>
-
-    <set-property name="gwt.logging.enabled" value="TRUE"/>
-    <set-property name="gwt.logging.logLevel" value="ALL"/>
 </module>
