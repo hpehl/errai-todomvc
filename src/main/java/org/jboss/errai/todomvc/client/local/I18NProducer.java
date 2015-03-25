@@ -26,10 +26,14 @@ import com.google.gwt.core.client.GWT;
 import javax.enterprise.inject.Produces;
 import javax.inject.Singleton;
 
+/**
+ * Producer for I18N messages
+ */
 public class I18nProducer {
 
     @Produces
     @Singleton
+    @SuppressWarnings("unused")
     TodoMessages produceMessages() {
         return GWT.create(TodoMessages.class);
     }

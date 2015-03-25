@@ -38,8 +38,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 /**
- * A stateless EJB implementing the DAO (Data Access Object) pattern for
- * {@link TodoItemRepository} objects.
+ * A stateless EJB implementing the DAO (Data Access Object) pattern for {@link TodoItem} objects.
  */
 @Stateless
 @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)

@@ -50,6 +50,9 @@ import static com.google.gwt.dom.client.Style.Display.NONE;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ESCAPE;
 
+/**
+ * Widget for one single TodoItem
+ */
 @Templated("MainPage.html#todoItem")
 public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
 

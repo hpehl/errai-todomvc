@@ -61,7 +61,7 @@ import static org.jboss.errai.todomvc.client.shared.QueryName.*;
 
 /**
  * This is the companion Java class of the main page as specified by
- * {@link Templated}. It refers to the HTML inside MainPage.html.
+ * {@link Templated}. It refers to the HTML inside MainPage.html#root.
  * <p>
  * The {@link Page} annotation declares this form as a bookmarkable page that
  * can be transitioned to by other pages of this application. Further the

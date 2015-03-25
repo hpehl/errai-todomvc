@@ -21,6 +21,9 @@
  */
 package org.jboss.errai.todomvc.client.shared;
 
+/**
+ * Names for the names queries.
+ */
 @SuppressWarnings("unused")
 public enum QueryName {
 

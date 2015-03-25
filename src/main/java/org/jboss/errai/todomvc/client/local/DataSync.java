@@ -33,8 +33,7 @@ import java.util.List;
 import static org.jboss.errai.todomvc.client.shared.QueryName.ALL;
 
 /**
- * Helper class for full two-way data synchronization between the client and the
- * server.
+ * Helper class for full two-way data synchronization between the client and the server.
  */
 public class DataSync {
 
@@ -42,8 +41,7 @@ public class DataSync {
      * The Errai Data Sync helper class which allows us to initiate a data
      * synchronization with the server.
      */
-    @Inject
-    private ClientSyncManager syncManager;
+    @Inject ClientSyncManager syncManager;
 
     /**
      * Performs a full two-way data synchronization between the client and the
