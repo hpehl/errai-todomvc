@@ -22,23 +22,21 @@
 package org.jboss.errai.todomvc.client.local;
 
 import org.jboss.errai.common.client.api.RemoteCallback;
-import org.jboss.errai.todomvc.client.shared.TodoItem;
 import org.jboss.errai.jpa.sync.client.local.ClientSyncManager;
 import org.jboss.errai.jpa.sync.client.shared.SyncResponse;
-import org.slf4j.Logger;
+import org.jboss.errai.todomvc.client.shared.TodoItem;
 
 import javax.inject.Inject;
 import java.util.Collections;
 import java.util.List;
+
+import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
 
 /**
  * Helper class for full two-way data synchronization between the client and the
  * server.
  */
 public class DataSync {
-
-    @Inject
-    private Logger logger;
 
     /**
      * The Errai Data Sync helper class which allows us to initiate a data
@@ -51,20 +49,10 @@ public class DataSync {
      * Performs a full two-way data synchronization between the client and the
      * server: the server gets all new and updated objects from us,
      * and we get all new and updated objects from the server.
-     */
-    public void sync() {
-        sync(response -> logger.debug("Received dataSync response:" + response));
-    }
-
-    /**
-     * Performs a full two-way data synchronization between the client and the
-     * server: the server gets all new and updated objects from us,
-     * and we get all new and updated objects from the server.
      *
      * @param callback the callback to invoked upon completion of the data sync request.
      */
     public void sync(RemoteCallback<List<SyncResponse<TodoItem>>> callback) {
-        logger.debug("Sending dataSync:");
-        syncManager.coldSync("allTodos", TodoItem.class, Collections.<String, Object>emptyMap(), callback, null);
+        syncManager.coldSync(ALL.query(), TodoItem.class, Collections.<String, Object>emptyMap(), callback, null);
     }
 }

@@ -21,21 +21,25 @@
  */
 package org.jboss.errai.todomvc.client.local;
 
-import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.http.client.Response;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.TextBox;
+import org.jboss.errai.common.client.api.Caller;
+import org.jboss.errai.enterprise.client.jaxrs.api.ResponseCallback;
 import org.jboss.errai.todomvc.client.shared.TodoItem;
+import org.jboss.errai.todomvc.client.shared.TodoItemEndpoint;
 import org.jboss.errai.ui.client.widget.HasModel;
 import org.jboss.errai.ui.shared.api.annotations.DataField;
 import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 
+import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
@@ -48,13 +52,17 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
     TodoItem model;
 
     @Inject EntityManager em;
-    @Inject DataSync dataSync;
+    @Inject Event<TodoItem> changedItem;
+    @Inject Caller<TodoItemEndpoint> endpoint;
 
     @DataField Element done = Document.get().createCheckInputElement();
     @DataField Element text = Document.get().createLabelElement();
-    @Inject @DataField Button delete;
     @Inject @DataField TextBox edit;
-    
+    @Inject @DataField Button delete;
+
+
+    // ------------------------------------------------------ model
+
     @Override
     public TodoItem getModel() {
         return model;
@@ -63,18 +71,17 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
     @Override
     public void setModel(TodoItem model) {
         this.model = model;
-        updateWidgets(model);
+        Elements.setChecked(done, model.isDone());
+        text.setInnerText(model.getText());
     }
 
-    void updateWidgets(final TodoItem item) {
-        setChecked(done, item.isDone());
-        text.setInnerText(item.getText());
-    }
+
+    // ------------------------------------------------------ event handler
 
     @EventHandler("done")
     void onDoneClicked(ClickEvent event) {
-        model.setDone(isChecked(done));
-        saveAndSync();
+        model.setDone(Elements.isChecked(done));
+        saveAndFire();
     }
 
     @EventHandler("text")
@@ -91,34 +98,36 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
         else if (event.getNativeKeyCode() == KEY_ENTER && !edit.getText().trim().equals("")) {
             editMode(false);
             model.setText(edit.getText());
-            saveAndSync();
+            saveAndFire();
         }
     }
 
-    void saveAndSync() {
-        model = em.merge(model);
-        dataSync.sync();
-        updateWidgets(model);
+    @EventHandler("delete")
+    void onDelete(ClickEvent event) {
+        endpoint.call(new ResponseCallback() {
+            @Override
+            public void callback(final Response response) {
+                if (response.getStatusCode() == Response.SC_NO_CONTENT) {
+                    changedItem.fire(model);
+                }
+            }
+        }).delete(model.getId());
     }
 
-    native void editMode(boolean enable) /*-{
-        var view = $doc.querySelector("div.view");
-        var edit = $doc.querySelector("input.edit");
+    void editMode(boolean enable) {
         if (enable) {
-            view.style.display = "none";
-            edit.style.display = "inherit";
-
+            done.getParentElement().setAttribute("hidden", "true");
         } else {
-            view.style.display = "inherit";
-            edit.style.display = "none";
+            done.getParentElement().setAttribute("hidden", "false");
         }
-    }-*/;
+        edit.setVisible(enable);
+    }
 
-    native boolean isChecked(JavaScriptObject checkbox) /*-{
-        return checkbox.checked;
-    }-*/;
 
-    native void setChecked(JavaScriptObject checkbox, boolean checked) /*-{
-        checkbox.checked = checked;
-    }-*/;
+    // ------------------------------------------------------ save and fire event
+
+    void saveAndFire() {
+        model = em.merge(model);
+        changedItem.fire(model);
+    }
 }

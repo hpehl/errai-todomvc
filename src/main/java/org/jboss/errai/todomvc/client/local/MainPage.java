@@ -47,6 +47,7 @@ import org.jboss.errai.ui.shared.api.annotations.EventHandler;
 import org.jboss.errai.ui.shared.api.annotations.Templated;
 import org.slf4j.Logger;
 
+import javax.enterprise.event.Observes;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -55,7 +56,9 @@ import java.util.List;
 import static com.google.gwt.dom.client.Style.Display.NONE;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.http.client.Response.SC_CREATED;
+import static org.jboss.errai.todomvc.client.shared.QueryNames.ACTIVE;
 import static org.jboss.errai.todomvc.client.shared.QueryNames.ALL;
+import static org.jboss.errai.todomvc.client.shared.QueryNames.COMPLETED;
 
 /**
  * This is the companion Java class of the main page as specified by
@@ -105,8 +108,15 @@ public class MainPage extends Composite {
         });
     }
 
+    @SuppressWarnings("UnusedParameters")
+    void changedItem(@Observes TodoItem changed) {
+        // simply reload all items
+        sync();
+    }
+
     void refresh() {
-        List<TodoItem> items = loadTodos();
+        QueryNames queryNames = queryName();
+        List<TodoItem> items = loadTodos(queryNames);
         if (items.isEmpty()) {
             // hide main section and footer
             toggleAll.getParentElement().getStyle().setDisplay(NONE);
@@ -115,7 +125,7 @@ public class MainPage extends Composite {
             toggleAll.getParentElement().getStyle().clearDisplay();
             todoCount.getElement().getParentElement().getStyle().clearDisplay();
         }
-        switch (queryName()) {
+        switch (queryNames) {
             case ALL:
                 allTodos.addStyleName("selected");
                 activeTodos.removeStyleName("selected");
@@ -133,12 +143,11 @@ public class MainPage extends Composite {
                 break;
         }
         todoItems.setItems(items);
-        todoCount.setText(messages.todoItems(items.size()));
-        clearCompleted.setText(messages.clearCompleted(items.size()));
+        todoCount.setText(messages.todoItems(loadTodos(ACTIVE).size()));
     }
 
-    List<TodoItem> loadTodos() {
-        TypedQuery<TodoItem> query = em.createNamedQuery(queryName().query(), TodoItem.class);
+    List<TodoItem> loadTodos(QueryNames queryNames) {
+        TypedQuery<TodoItem> query = em.createNamedQuery(queryNames.query(), TodoItem.class);
         return query.getResultList();
     }
 
@@ -148,13 +157,14 @@ public class MainPage extends Composite {
 
     @EventHandler("toggleAll")
     void onToggleAll(ClickEvent event) {
-        List<TodoItem> items = loadTodos();
+        boolean checked = Elements.isChecked(toggleAll);
+        List<TodoItem> items = loadTodos(queryName());
         for (TodoItem item : items) {
-            item.setDone(!item.isDone());
+            item.setDone(checked);
             em.persist(item);
         }
         em.flush();
-        dataSync.sync();
+        sync();
     }
 
     @EventHandler("newTodo")
@@ -172,5 +182,15 @@ public class MainPage extends Composite {
             }).create(item);
             newTodo.setText("");
         }
+    }
+
+    @EventHandler("clearCompleted")
+    void clearCompleted(ClickEvent event) {
+        List<TodoItem> items = loadTodos(COMPLETED);
+        for (TodoItem item : items) {
+            em.remove(item);
+        }
+        em.flush();
+        sync();
     }
 }

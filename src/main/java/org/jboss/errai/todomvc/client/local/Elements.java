@@ -21,12 +21,20 @@
  */
 package org.jboss.errai.todomvc.client.local;
 
-import com.google.gwt.i18n.client.LocalizableResource.DefaultLocale;
-import com.google.gwt.i18n.client.Messages;
+import com.google.gwt.core.client.JavaScriptObject;
 
-@DefaultLocale("en") // not required since this is the default
-public interface TodoMessages extends Messages {
-    @DefaultMessage("{0,number} items left")
-    @AlternateMessage({"one", "1 item left"})
-    String todoItems(@PluralCount int itemCount);
+/**
+ * @author Harald Pehl
+ */
+final class Elements {
+
+    private Elements() {}
+
+    static native boolean isChecked(JavaScriptObject checkbox) /*-{
+        return checkbox.checked;
+    }-*/;
+
+    static native void setChecked(JavaScriptObject checkbox, boolean checked) /*-{
+        checkbox.checked = checked;
+    }-*/;
 }
