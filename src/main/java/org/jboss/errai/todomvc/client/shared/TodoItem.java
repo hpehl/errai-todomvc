@@ -47,8 +47,7 @@ import java.util.Date;
 })
 public class TodoItem {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Version

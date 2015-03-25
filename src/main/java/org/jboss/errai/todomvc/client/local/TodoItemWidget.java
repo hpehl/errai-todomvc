@@ -23,7 +23,7 @@ package org.jboss.errai.todomvc.client.local;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.Style;
+import com.google.gwt.dom.client.LabelElement;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.KeyDownEvent;
@@ -44,14 +44,12 @@ import javax.enterprise.event.Event;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import static com.google.gwt.dom.client.Style.Display.BLOCK;
-import static com.google.gwt.dom.client.Style.Display.INITIAL;
-import static com.google.gwt.dom.client.Style.Display.NONE;
+import static com.google.gwt.dom.client.Style.Display.*;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ENTER;
 import static com.google.gwt.event.dom.client.KeyCodes.KEY_ESCAPE;
 
 /**
- * Widget for one single TodoItem
+ * Widget for a single TodoItem
  */
 @Templated("MainPage.html#todoItem")
 public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
@@ -63,7 +61,7 @@ public class TodoItemWidget extends Composite implements HasModel<TodoItem> {
     @Inject Caller<TodoItemEndpoint> endpoint;
 
     @DataField Element done = Document.get().createCheckInputElement();
-    @DataField Element text = Document.get().createLabelElement();
+    @DataField LabelElement text = Document.get().createLabelElement();
     @Inject @DataField TextBox edit;
     @Inject @DataField Button delete;
 
